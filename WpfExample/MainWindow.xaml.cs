@@ -21,14 +21,17 @@ namespace WpfExample
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MantenimientoDeProductoVM mantenimientoDeProductoVm;
+        private MantenimientoDeProductoVM mantenimientoDeProductoVm = new MantenimientoDeProductoVM();
         public MainWindow()
         {
-            this.mantenimientoDeProductoVm = new MantenimientoDeProductoVM();
-            mantenimientoDeProductoVm.CargarProductos();
             InitializeComponent();
+            mantenimientoDeProductoVm.CargarProductos();
             this.DataContext = mantenimientoDeProductoVm;
-            this.dataGrid.DataContext = mantenimientoDeProductoVm.productosResgistrados;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            this.mantenimientoDeProductoVm.GrabarProducto();
         }
     }
 }
