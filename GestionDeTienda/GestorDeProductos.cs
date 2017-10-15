@@ -55,7 +55,10 @@ namespace GestionDeTienda
         }
         public List<ProductoRegistrado> ListarTodosLosProductos()
         {
-            throw new NotImplementedException();
+            using (Tienda tienda = new Tienda())
+            {
+                return tienda.Productos.ToList().Select(x => ConvertirProductoA_DTO(x)).ToList();
+            }
         }
         private ProductoRegistrado ConvertirProductoA_DTO(Producto producto) {
             ProductoRegistrado productoRegistrado = new ProductoRegistrado();
