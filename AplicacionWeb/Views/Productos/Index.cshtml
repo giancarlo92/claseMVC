@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_FormularioDeProducto")
+
+<div id="contenedorTabla">
+    @Html.Action("_TablaDeProductos")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+
+    function listarProductos() {
+        $.get("../api/Productos", function (productos) {
+            productos.forEach(function (producto) {
+                console.log(producto.Nombre);
+            })
+            //for (var i in productos){
+            //    console.log(productos[i].Nombre);
+            //}
+        });
+    }
+
+    function NuevoProducto() {
+        this.Nombre = "";
+        this.Precio = 0;
+        NombresDeLasCategorias = [];
+        return this
+    }
+
+    function CrearNuevoProducto(Nombre, Precio) {
+        var nuevoProducto = new NuevoProducto();
+        nuevoProducto.Nombre = Nombre,
+        nuevoProducto.Precio = Precio;
+        $.ajax({
+            type: "POST",
+            url: "../api/Productos",
+            data: JSON.stringify(nuevoProducto),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                actualizarTabla();
+            }
+        });
+    }
+
+    $("#GuardarProducto").click(function (event) {
+        event.preventDefault();
+        var Nombre = $("#Nombre").val();
+        var Precio = $("#Precio").val();
+        CrearNuevoProducto(Nombre, Precio);
+    });
+
+    function actualizarTabla() {
+        $.get("productos/_TablaDeProductos", function (htmlData) {
+            $("#contenedorTabla").html(htmlData);
+        });
+    }
+
+</script>
+
